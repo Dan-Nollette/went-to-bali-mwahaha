@@ -1,0 +1,23 @@
+<h1>Shopping Cart</h1>
+
+<% if @order_items.any? %>
+  <% @order_items.each do |item| %>
+    <p><%= item.product.name %> | <%= link_to "Delete", order_item_path(item), :data => {:confirm => "You sure?", :method => "delete"} %></p>
+    <p> Unit Price: <%= number_to_currency item.product.price %> | Quantity: <%= item.quantity %> | Total Price: <%= number_to_currency (item.product.price * item.quantity) %></p>
+  <% end %>
+  <p>Your Total: <%= number_to_currency current_order.total_price %></p>
+  <p><%= link_to "Finalize order", finalize_path %></p>
+<% else %>
+  <p>Your shopping cart is empty.</p>
+<% end %>
+
+<% if @previous_orders %>
+  <h3>Your order history:</h3>
+  <% @previous_orders.each do |order| %>
+    <h4>Order id: <%= order.id %> was completed on: <%= order.updated_at.strftime("%c") %></h4>
+    <% order.order_items.each do |item| %>
+      <p>Item name: <%= item.product.name %> | Quantity: <%= item.quantity %> | Price: <%= number_to_currency item.product.price %>
+    <% end %>
+    <p>Total cost: <%= number_to_currency order.total_price %>
+  <% end %>
+<% end %>

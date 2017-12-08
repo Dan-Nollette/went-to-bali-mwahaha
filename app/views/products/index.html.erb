@@ -5,8 +5,17 @@
   <% @products.each do |product| %>
     <div class="col s4">
       <h4><%= product.name %></h4>
-      <p><%= product.description %></p>
-      <p><%= number_to_currency product.price %></p>
+      <div id="product_no_details_<%=product.id%>">
+        <%= link_to "Show Detail", product_path(product), remote: true %>
+      </div>
+      <div class="product_detail" id="product_details_<%=product.id%>">
+        <%= link_to "Hide Detail", product_path(product), remote: true %>
+        <div class="image_width">
+          <%= image_tag "http://www.riobeauty.co.uk/images/product_image_not_found.gif"%>
+        </div>
+        <p><%= product.description %></p>
+        <p><%= number_to_currency product.price %></p>
+      </div>
       <%= form_for @order_item, remote: true do |f| %>
         <%= f.hidden_field :product_id, value: product.id %>
         <%= f.number_field :quantity, placeholder: "Oops, breaks if you don't add input!" %>
